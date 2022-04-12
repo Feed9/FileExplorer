@@ -11,7 +11,7 @@ namespace FileExplorer.Models
     {
 
 
-        public DriveInfo[] DriveInfos { get; set; }        
+        public DriveInfo[] DriveInfos { get; set; }
         public List<PhysicalFileProvider> PhysicalFileProviders { get; set; }
 
         public FileManager()
@@ -20,10 +20,9 @@ namespace FileExplorer.Models
             CreatePhysicalFileProviders();
         }
 
-
         public FileSystem CreateFileSystemModel(List<FileSystemElement> elements, string path)
         {
-            return new FileSystem(elements,path);
+            return new FileSystem(elements, path);
         }
         private void CreatePhysicalFileProviders()
         {

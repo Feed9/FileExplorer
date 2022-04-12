@@ -21,41 +21,38 @@ namespace FileExplorer.Controllers
             _fileManager = fileManager;
         }
 
-        public IActionResult Index(string path = "")
+        public async Task<IActionResult> Index(string path = "")
         {
             var provider = _fileManager.PhysicalFileProviders.FirstOrDefault();
-            string fixedPath;
-            string pathString;
-            if (path == null)
+            string fixedPath = string.Empty;
+            string pathString = provider.Root;
+
+            if (path != null && path != string.Empty)
             {
-                fixedPath = "";
-                pathString = provider.Root;
-            }
-            else
-            {
-                fixedPath = path.Replace(provider.Root, "");
-                pathString = path == string.Empty ? provider.Root : path;
+                fixedPath = path.Replace(provider.Root, string.Empty);
+                pathString = path;
             }
 
             var directories = provider.GetDirectoryContents(fixedPath);
 
-            IEnumerable<FileSystemElement> directoriesList = directories.Where(element => element.IsDirectory)
-                 .Select(e => new SystemDirectory(e.PhysicalPath, e.Name, e.LastModified.UtcDateTime, 0, e.IsDirectory, @"\icons\folder.svg"));
+            List<SystemDirectory> directoriesList = directories.Where(element => element.IsDirectory)
+                 .Select(e => new SystemDirectory(e.PhysicalPath, e.Name, e.LastModified.UtcDateTime,
+                 0,e.IsDirectory, @"\icons\folder.svg")).ToList();
 
-            IEnumerable<FileSystemElement> filesList = directories.Where(element => element.IsDirectory == false)
-                 .Select(e => new SystemFile(e.PhysicalPath, e.Name, e.LastModified.UtcDateTime, e.Length, e.IsDirectory, @"\icons\file-earmark.svg"));
+            List<SystemFile> filesList = directories.Where(element => element.IsDirectory == false)
+                 .Select(e => new SystemFile(e.PhysicalPath, e.Name, e.LastModified.UtcDateTime,
+                 e.Length, e.IsDirectory, @"\icons\file-earmark.svg")).ToList();
+
+            await directoriesList.CalculateSizeForDirectoriesAsync();
 
             List<FileSystemElement> elements = new();
-            elements.AddRange(filesList);
             elements.AddRange(directoriesList);
+            elements.AddRange(filesList);
 
-            FileSystem fileSystem = _fileManager.CreateFileSystemModel(elements,pathString);
+
+            FileSystem fileSystem = _fileManager.CreateFileSystemModel(elements, pathString);
+            ViewBag.Path = path;
             return View(fileSystem);
-        }
-        public async Task<IActionResult> Folder(int id)
-        {
-
-            return View();
         }
 
         public IActionResult Privacy()

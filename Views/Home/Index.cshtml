@@ -7,41 +7,47 @@
 <div class="text-center">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-auto bg-light sticky-top">
+            <div class="d-flex flex-column vh-100 flex-shrink-0 p-3 text-white bg-dark" style="width: 250px;">
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"> <svg class="bi me-2" width="40" height="32"> </svg> <span class="fs-4">BBBootstrap</span> </a>
+                <hr>
+                <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item"> <a href="#" class="nav-link" aria-current="page"> <i class="fa fa-home"></i><span class="ms-2">Home</span> </a> </li>
 
-                @*@foreach (var item in Model.Directory.Children)
-                    {
+                    
 
-                        <ul class="nav nav-pills nav-flush">
-                            <li class="nav-item">
-                                @item.Title
-                            </li>
-                        </ul>
-
-                    }*@
+                </ul>
+                <hr>
             </div>
             <div class="col-sm p-3 min-vh-100">
 
-                <nav class="navbar navbar-light bg-light">
-                    <form asp-controller="Home" asp-action="Index" class="container-fluid">
-                        <div class="input-group">
-                            <span class="input-group-text" id="basic-addon1"><img src="\icons\folder.svg" alt="" /></span>
-                            <input name="path" type="text" class="form-control" value="@Model.Path">
+                <nav class="navbar  navbar-light bg-light ">
+                    <div class="container-fluid d-flex justify-content-start">
+
+                        <a class="nav-link up-link" asp-route-path="@ViewBag.Path"><img class="up-link-icon" src="~/icons/arrow-up-square.svg" alt="" /> Up</a>
+                        <div class="flex-grow-1">
+                            <form asp-controller="Home" asp-action="Index" class="container-fluid ">
+                                <div class="input-group">
+                                    <span class="input-group-text" id="basic-addon1"><img src="\icons\folder.svg" alt="" /></span>
+                                    <input name="path" type="text" class="form-control" value="@Model.Path">
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </nav>
                 <table class="table table-borderlesss table-sm table-hover">
                     <thead class="table-dark">
-                    <th style="width: 50%">Name</th>
-                    <th style="width: 25%">Last Modified</th>
-                    <th style="width: 25%">Size</th>
+                        <tr>
+                            <td>Name</td>
+                            <td>Last Modified</td>
+                            <td align="left">Size</td>
+                        </tr>
                     </thead>
                     @foreach (var item in Model.Elements)
                     {
                         <tr>
-                            <td><img src="@item.IconPath" alt="" />@item.Title</td>
+                            <td align="left"><img src="@item.IconPath" alt="" /> @item.Title</td>
                             <td>@item.LastModified</td>
-                            <td>@item.Size байт</td>
+                            <td align="left">@item.Size кб</td>
                         </tr>
                     }
                 </table>

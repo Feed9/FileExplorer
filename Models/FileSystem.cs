@@ -11,10 +11,10 @@ namespace FileExplorer.Models
         public FileSystem(List<FileSystemElement> elements, string path)
         {
             Elements = elements;
-            Path = path;
+            Path = path;            
         }
 
         public List<FileSystemElement> Elements { get; init; }
-        public string Path { get; init; }
+        public string Path { get; init; }        
     }
 }
