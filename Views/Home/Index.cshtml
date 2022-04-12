@@ -1,0 +1,51 @@
+﻿@model FileExplorer.Models.FileSystem
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-auto bg-light sticky-top">
+
+                @*@foreach (var item in Model.Directory.Children)
+                    {
+
+                        <ul class="nav nav-pills nav-flush">
+                            <li class="nav-item">
+                                @item.Title
+                            </li>
+                        </ul>
+
+                    }*@
+            </div>
+            <div class="col-sm p-3 min-vh-100">
+
+                <nav class="navbar navbar-light bg-light">
+                    <form asp-controller="Home" asp-action="Index" class="container-fluid">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1"><img src="\icons\folder.svg" alt="" /></span>
+                            <input name="path" type="text" class="form-control" value="@Model.Path">
+                        </div>
+                    </form>
+                </nav>
+                <table class="table table-borderlesss table-sm table-hover">
+                    <thead class="table-dark">
+                    <th style="width: 50%">Name</th>
+                    <th style="width: 25%">Last Modified</th>
+                    <th style="width: 25%">Size</th>
+                    </thead>
+                    @foreach (var item in Model.Elements)
+                    {
+                        <tr>
+                            <td><img src="@item.IconPath" alt="" />@item.Title</td>
+                            <td>@item.LastModified</td>
+                            <td>@item.Size байт</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
