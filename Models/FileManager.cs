@@ -11,23 +11,27 @@ namespace FileExplorer.Models
     {
 
 
-        public DriveInfo[] DriveInfos { get; set; }
-        public FileSystem FileSystem { get; set; }
-        public List<PhysicalFileProvider> PhysicalFileProvider { get; set; }
+        public DriveInfo[] DriveInfos { get; set; }        
+        public List<PhysicalFileProvider> PhysicalFileProviders { get; set; }
 
         public FileManager()
         {
             DriveInfos = DriveInfo.GetDrives();
-            PhysicalFileProvider = new(); 
-            PhysicalFileProvider.Add(GetPhysicalFileProvider(DriveInfos.FirstOrDefault().RootDirectory.FullName));
-           // PhysicalFileProvider.Add(GetPhysicalFileProvider("C:"));
-        }      
+            CreatePhysicalFileProviders();
+        }
 
 
-
-        public PhysicalFileProvider GetPhysicalFileProvider(string path)
+        public FileSystem CreateFileSystemModel(List<FileSystemElement> elements, string path)
         {
-            return new PhysicalFileProvider(path);
+            return new FileSystem(elements,path);
+        }
+        private void CreatePhysicalFileProviders()
+        {
+            PhysicalFileProviders = new List<PhysicalFileProvider>();
+            foreach (var driver in DriveInfos)
+            {
+                PhysicalFileProviders.Add(new PhysicalFileProvider(driver.RootDirectory.FullName));
+            }
         }
     }
 }

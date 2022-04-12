@@ -21,9 +21,9 @@ namespace FileExplorer.Controllers
             _fileManager = fileManager;
         }
 
-        public IActionResult Index(string? path = "")
+        public IActionResult Index(string path = "")
         {
-            var provider = _fileManager.PhysicalFileProvider.FirstOrDefault();
+            var provider = _fileManager.PhysicalFileProviders.FirstOrDefault();
             string fixedPath;
             string pathString;
             if (path == null)
@@ -40,7 +40,7 @@ namespace FileExplorer.Controllers
             var directories = provider.GetDirectoryContents(fixedPath);
 
             IEnumerable<FileSystemElement> directoriesList = directories.Where(element => element.IsDirectory)
-                 .Select(e => new SystemDirectory(e.PhysicalPath, e.Name, e.LastModified.UtcDateTime, null, e.IsDirectory, @"\icons\folder.svg"));
+                 .Select(e => new SystemDirectory(e.PhysicalPath, e.Name, e.LastModified.UtcDateTime, 0, e.IsDirectory, @"\icons\folder.svg"));
 
             IEnumerable<FileSystemElement> filesList = directories.Where(element => element.IsDirectory == false)
                  .Select(e => new SystemFile(e.PhysicalPath, e.Name, e.LastModified.UtcDateTime, e.Length, e.IsDirectory, @"\icons\file-earmark.svg"));
@@ -49,7 +49,7 @@ namespace FileExplorer.Controllers
             elements.AddRange(filesList);
             elements.AddRange(directoriesList);
 
-            FileSystem fileSystem = new(elements, pathString);
+            FileSystem fileSystem = _fileManager.CreateFileSystemModel(elements,pathString);
             return View(fileSystem);
         }
         public async Task<IActionResult> Folder(int id)

@@ -7,14 +7,14 @@ namespace FileExplorer.Models
 {
     public abstract class FileSystemElement
     {
-        public FileSystemElement(string path, string title, DateTime lastModified, long? size,bool? isDirectory,string iconPath)
+        public FileSystemElement(string path, string title, DateTime lastModified, long size,bool isDirectory,string iconPath)
         {
             Path = path;
             Title = title;
             LastModified = lastModified;
-            Size = size ?? 0;
-            IsDirectory = isDirectory ?? false;
-            IconPath = iconPath ?? "";
+            Size = size;
+            IsDirectory = isDirectory;
+            IconPath = iconPath;
         }
         public string Path { get; init; }
         public string Title { get; init; }

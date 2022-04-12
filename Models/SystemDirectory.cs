@@ -9,7 +9,7 @@ namespace FileExplorer.Models
     public class SystemDirectory : FileSystemElement
     {
 
-        public SystemDirectory(string path, string title, DateTime lastModified, long? size, bool? isDirectory, string iconPath)
+        public SystemDirectory(string path, string title, DateTime lastModified, long size, bool isDirectory, string iconPath)
             : base(path, title, lastModified, size, isDirectory, iconPath)
         {
             Size = CalculateDirectorySize(path);

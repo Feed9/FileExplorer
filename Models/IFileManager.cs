@@ -8,6 +8,7 @@ namespace FileExplorer.Models
 {
    public interface IFileManager
     {
-         List<PhysicalFileProvider> PhysicalFileProvider { get; set; }
+         List<PhysicalFileProvider> PhysicalFileProviders { get; set; }
+        public FileSystem CreateFileSystemModel(List<FileSystemElement> elements, string path);
     }
 }
