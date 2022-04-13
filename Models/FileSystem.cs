@@ -27,12 +27,11 @@ namespace FileExplorer.Models
         private string GoUpPath(string path)
         {
             string previous = path.TrimEnd(new Char[] { '\\' });
-            if (-1 == previous.LastIndexOf(@"\"))
+            if (-1 != previous.LastIndexOf(@"\"))
             {
-                return previous + @"\";
+                previous = previous.Remove(previous.LastIndexOf(@"\"));
             }
 
-            previous = previous.Remove(previous.LastIndexOf(@"\"));
             return previous + @"\";
         }
         public void Sort(SortOrder sortOrder)
