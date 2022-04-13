@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace FileExplorer.Models
 {
-   public interface IFileManager
+    public interface IFileManager
     {
-         List<PhysicalFileProvider> PhysicalFileProviders { get; set; }
+        List<PhysicalFileProvider> PhysicalFileProviders { get; set; }
+        public bool SkipOsDirectory { get; set; }
         public FileSystem CreateFileSystemModel(List<FileSystemElement> elements, string path);
     }
 }

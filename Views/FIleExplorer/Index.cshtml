@@ -1,0 +1,91 @@
+﻿@model FileExplorer.Models.FileSystem
+
+@{
+    ViewData["Title"] = "FileExplorer";
+}
+
+<div class="text-center">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="d-flex flex-column vh-100 flex-shrink-0 p-3 text-white bg-dark" style="width: 250px;">
+                <h3>Ваши Диски</h3>
+                <hr>
+                <ul class="nav nav-pills flex-column mb-auto">
+                    @foreach (var root in Model.Roots)
+                    {
+                        <li class="nav-item">
+                            <a class="disk-link nav-link" aria-current="page" asp-route-path="@root">
+                                <img src="~/icons/hdd.svg" alt="" /> @root
+                            </a>
+                        </li>
+
+                    }
+                </ul>
+                <hr>
+            </div>
+            <div class="col-sm p-3 min-vh-100">
+
+                <nav class="navbar  navbar-light bg-light ">
+                    <div class="container-fluid d-flex justify-content-start">
+
+                        <a class="nav-link up-link link" name="path" asp-route-path="@Model.Up"><img class="up-link-icon" src="~/icons/arrow-up-square.svg" alt="" /> Up</a>
+                        <div class="flex-grow-1">
+                            <form asp-controller="FileExplorer" asp-action="Index" class="container-fluid ">
+                                <div class="input-group">
+                                    <span class="input-group-text" id="basic-addon1"><img src="\icons\folder.svg" alt="" /></span>
+                                    <input name="path" type="text" class="form-control" value="@Model.Path">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </nav>
+                <table class="table table-borderlesss table-sm ">
+                    <thead class="table-dark">
+                        <tr>
+                            <td>
+                                <a class="sort-link" asp-action="Index" asp-route-path="@Model.Path" asp-route-sortOrder="@ViewBag.TitleSort">
+                                    <p>Title</p>
+                                </a>
+                            </td>
+                            <td>
+                                <a class="sort-link" asp-action="Index" asp-route-path="@Model.Path" asp-route-sortOrder="@ViewBag.DateSort">
+                                    <p>Last Modified</p>
+                                </a>
+                            </td>
+                            <td align="left">
+                                <a class="sort-link" asp-action="Index" asp-route-path="@Model.Path" asp-route-sortOrder="@ViewBag.SizeSort">
+                                    <p>Size</p>
+                                </a>
+                            </td>
+                        </tr>
+                    </thead>
+                    @if (Model.Elements != null)
+                    {
+                        @foreach (var element in Model.Elements)
+                        {
+                            <tr table-hover>
+                                <td align="left">
+                                    @if (element.IsDirectory)
+                                    {
+                                        <a class="link" asp-route-path="@element.Path"><img src="@element.IconPath" alt="" /> @element.Title</a>
+                                    }
+                                    else
+                                    {
+                                        <img src="@element.IconPath" alt="" />@element.Title
+
+                                    }
+                                </td>
+                                <td>@element.LastModified</td>
+                                <td align="left">@element.Size кб</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <h5>По данному пути ничего не найдено...</h5>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

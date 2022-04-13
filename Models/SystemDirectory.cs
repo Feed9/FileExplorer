@@ -8,17 +8,17 @@ namespace FileExplorer.Models
 {
     public class SystemDirectory : FileSystemElement
     {
-
+        const string EXCEPTION_DIRECTORY = @"C:\Windows";
         public SystemDirectory(string path, string title, DateTime lastModified, long size, bool isDirectory, string iconPath)
             : base(path, title, lastModified, size, isDirectory, iconPath)
         {
 
         }
-       
-        public  void  CalculateDirectorySize()
+
+        public void CalculateDirectorySize(bool skipOsDirectory)
         {
-            
-            if (Path == @"C:\Windows") return;
+
+            if (Path == EXCEPTION_DIRECTORY && skipOsDirectory) return;
 
 
             try
@@ -29,13 +29,13 @@ namespace FileExplorer.Models
                     RecurseSubdirectories = true
                 });
 
-                Size = (files.Sum(e => e.Length))/1024;
+                Size = (files.Sum(e => e.Length)) / 1024;
 
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-            }            
+            }
         }
 
     }
